@@ -1,22 +1,18 @@
 package com.example.murun.controller
 
-import com.example.murun.dataclass.BpmRequestDto
-import org.springframework.core.io.Resource
+import com.example.murun.service.S3UploaderService
 import org.springframework.core.io.ResourceLoader
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
-class MusicController (private val resourceLoader: ResourceLoader){
+class MusicController(private val resourceLoader: ResourceLoader, private val s3UploaderService: S3UploaderService) {
 
-    @GetMapping("/test")
+    @GetMapping("/song")
     @ResponseBody
-    fun findMusic(@RequestBody requestDto: BpmRequestDto): ResponseEntity<Resource>{
-        println("test :${requestDto.bpm}")
+    fun findMusic(@RequestParam bpm: Int): ResponseEntity<Any?> {
+        println("bpm :${bpm}")
         val fileResource = resourceLoader.getResource("classpath:/static/test.mp3")
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"test.mp3\"")
