@@ -1,6 +1,6 @@
 package com.example.murun.web
 
-import com.example.murun.domain.BpmResponseDto
+import com.example.murun.domain.SongResponseDto
 import com.example.murun.infrastructure.aws.S3UploaderService
 import org.springframework.core.io.ResourceLoader
 import org.springframework.web.bind.annotation.GetMapping
@@ -13,10 +13,10 @@ class MusicController(private val resourceLoader: ResourceLoader, private val s3
 
     @GetMapping("/song")
     @ResponseBody
-    fun findMusic(@RequestParam bpm: Int): BpmResponseDto {
+    fun findMusic(@RequestParam bpm: Int): SongResponseDto {
         println("bpm :${bpm}")
         val fileResource = resourceLoader.getResource("classpath:/static/test.mp3")
-        return BpmResponseDto(1,"https://murun-bucket.s3.amazonaws.com/100bpm/Tobu+-+Back+To+You.mp3")
+        return SongResponseDto(1,"https://murun-bucket.s3.amazonaws.com/100bpm/Tobu+-+Back+To+You.mp3")
     }
 
 }
