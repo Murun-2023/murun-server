@@ -6,6 +6,7 @@ plugins {
     id ("org.jetbrains.kotlin.jvm") version "1.5.21"
     id ("org.jetbrains.kotlin.plugin.spring") version "1.5.21"
     id("org.jetbrains.kotlin.plugin.jpa") version "1.5.21"
+    kotlin("kapt") version "1.7.10"
 }
 
 group = "com.example"
@@ -24,6 +25,7 @@ dependencies {
     implementation ("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
     implementation ("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation ("com.querydsl:querydsl-jpa")
+    kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
     implementation ("org.postgresql:postgresql:42.3.3")
 
     testImplementation ("org.springframework.boot:spring-boot-starter-test")
