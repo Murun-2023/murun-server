@@ -1,4 +1,4 @@
-package com.example.murun.infrastructure.jpa
+package com.example.murun.infrastructure.queryDsl
 
 import javax.persistence.*
 
@@ -7,7 +7,8 @@ import javax.persistence.*
 data class SongEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int? = null,
+    val id: Int,
+    val uuid: Int,
     val bpm: Int,
     val downloadUrl: String
 )

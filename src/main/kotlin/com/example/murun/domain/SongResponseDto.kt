@@ -1,3 +1,3 @@
 package com.example.murun.domain
 
-data class SongResponseDto(var uid: Int, var url: String)
+data class SongResponseDto(var uuid: Int, var url: String)
