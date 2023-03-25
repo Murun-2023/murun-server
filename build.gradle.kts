@@ -27,6 +27,7 @@ dependencies {
     implementation ("com.querydsl:querydsl-jpa")
     kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
     implementation ("org.postgresql:postgresql:42.3.3")
+    implementation ("org:jaudiotagger:2.0.3")
 
     testImplementation ("org.springframework.boot:spring-boot-starter-test")
 }

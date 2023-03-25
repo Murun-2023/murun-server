@@ -3,6 +3,7 @@ package com.example.murun.infrastructure.aws
 import com.amazonaws.services.s3.AmazonS3
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 
 @Service
 class S3UploaderServiceImpl constructor(private val s3Client: AmazonS3,
@@ -11,6 +12,10 @@ class S3UploaderServiceImpl constructor(private val s3Client: AmazonS3,
     override fun getBpmFile(bpm: Int) {
         val objectListing = s3Client.listObjects(bucket, "bpm$bpm")
         println(objectListing)
+
+    }
+
+    override fun uploadBpmFile(file: MultipartFile){
 
     }
 
