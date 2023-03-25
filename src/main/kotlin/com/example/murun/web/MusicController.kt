@@ -19,9 +19,9 @@ class MusicController(
     }
 
     @PostMapping
-    fun addSong(@RequestPart file: MultipartFile){
+    fun addSong(@RequestPart file: MultipartFile): SongResponseDto{
         println("file: ${file.originalFilename}")
-        songService.addSong(file)
+        return songService.addSong(file)
     }
 
 }

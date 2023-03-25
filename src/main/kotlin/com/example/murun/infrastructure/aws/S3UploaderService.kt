@@ -4,5 +4,5 @@ import org.springframework.web.multipart.MultipartFile
 
 interface S3UploaderService {
     fun getBpmFile(bpm: Int)
-    fun uploadBpmFile(file: MultipartFile)
+    fun uploadBpmFile(file: MultipartFile, title: String, bpm: String): String
 }

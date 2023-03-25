@@ -9,6 +9,7 @@ import org.jaudiotagger.tag.FieldKey
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
+import java.util.*
 
 @Service
 class SongService(
@@ -16,30 +17,33 @@ class SongService(
         private val s3UploaderService: S3UploaderService
 ) {
 
-    fun getCorrectBpmSong(bpm: Int): List<SongResponseDto>{
+    fun getCorrectBpmSong(bpm: Int): List<SongResponseDto> {
         return songJpaRepository.getCorrectBpmSong(bpm)
-                .map{
+                .map {
                     convertDto(it)
                 }.toList()
     }
 
-    fun addSong(multipartFile: MultipartFile){
-        val file: File = File(multipartFile.originalFilename)
+    fun addSong(multipartFile: MultipartFile): SongResponseDto {
+        val file = File(multipartFile.originalFilename)
         file.writeBytes(multipartFile.bytes)
 
         val mp3: MP3File = AudioFileIO.read(file) as MP3File
         file.delete()
 
         val title: String = mp3.tag.getFirst(FieldKey.TITLE)
-        println("title:${title}")
+        val bpm: String = mp3.tag.getFirst(FieldKey.BPM)
+        val uuid: String = UUID.randomUUID().toString()
+        val url = s3UploaderService.uploadBpmFile(multipartFile, title, bpm)
+        songJpaRepository.saveBpmSong(bpm.toInt(), uuid, url)
+        return SongResponseDto(uuid, url)
+    }
+
+    private fun geSongTitle(file: MultipartFile) {
 
     }
 
-    private fun geSongTitle(file: MultipartFile){
-
-    }
-
-    private fun convertDto(songEntity: SongEntity): SongResponseDto{
-        return SongResponseDto(songEntity.uuid, songEntity.downloadUrl)
+    private fun convertDto(song: SongEntity): SongResponseDto {
+        return SongResponseDto(song.uuid, song.downloadUrl)
     }
 }
