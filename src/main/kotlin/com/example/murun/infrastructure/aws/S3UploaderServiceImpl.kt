@@ -12,17 +12,33 @@ import java.io.IOException
 class S3UploaderServiceImpl constructor(private val s3Client: AmazonS3,
                                         @Value("\${murun.s3.bucketName}") private val bucket: String,
                                         @Value("\${murun.s3.bucket.base}") private val basePath: String): S3UploaderService {
+    val albumBase = "album/"
+
     override fun getBpmFile(bpm: Int) {
         val objectListing = s3Client.listObjects(bucket, "bpm$bpm")
         println(objectListing)
 
     }
 
-    override fun uploadBpmFile(file: MultipartFile, title: String, bpm: String) : String{
+    override fun uploadAlbumImage(file: MultipartFile, title: String, bpm:Int): String {
         val metadata = ObjectMetadata()
         metadata.contentType = file.contentType
         metadata.contentLength = file.size
-        var newFileName: String = bpm + "bpm/" + title
+        val newFileName: String = bpm.toString() + "bpm/" + albumBase + title
+        try{
+            val request = PutObjectRequest(bucket, newFileName, file.inputStream, metadata)
+            s3Client.putObject(request)
+        } catch (e: IOException){
+            throw e
+        }
+        return basePath + newFileName
+    }
+
+    override fun uploadSongFile(file: MultipartFile, title: String, bpm: Int) : String{
+        val metadata = ObjectMetadata()
+        metadata.contentType = file.contentType
+        metadata.contentLength = file.size
+        var newFileName: String = bpm.toString() + "bpm/" + title
         try{
             val request = PutObjectRequest(bucket, newFileName, file.inputStream, metadata)
             s3Client.putObject(request)

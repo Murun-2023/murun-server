@@ -24,7 +24,13 @@ class SongService(
                 }.toList()
     }
 
-    fun addSong(multipartFile: MultipartFile): SongResponseDto {
+    fun addSong(title: String, artist: String, bpm: Int, albumImage: MultipartFile, song: MultipartFile): SongResponseDto {
+        //albumImage 저장
+        val albumImageUrl = uploadAlbumImage(albumImage, title, bpm)
+        //song 파일 저장
+        val songUrl = uploadSong(song, title, bpm)
+        //추후 추가여부를 위해 남겨놓음 요건이 변경될 가능성이 있음.
+        /*
         val file = File(multipartFile.originalFilename)
         file.writeBytes(multipartFile.bytes)
 
@@ -35,9 +41,18 @@ class SongService(
         val bpm: String = mp3.tag.getFirst(FieldKey.BPM)
         val uuid: String = UUID.randomUUID().toString()
         val url = s3UploaderService.uploadBpmFile(multipartFile, title, bpm)
-        songJpaRepository.saveBpmSong(bpm.toInt(), uuid, url)
-        return SongResponseDto(uuid,"title","aritst","123", url)
-        //return SongResponseDto(uuid, url)
+         */
+        val uuid: String = UUID.randomUUID().toString()
+        songJpaRepository.saveBpmSong(title, artist, albumImageUrl, bpm, uuid, songUrl)
+        return SongResponseDto(uuid, title, artist, albumImageUrl, songUrl)
+    }
+
+    private fun uploadAlbumImage(albumImage: MultipartFile, title: String, bpm: Int): String {
+        return s3UploaderService.uploadAlbumImage(albumImage, title, bpm)
+    }
+
+    private fun uploadSong(song: MultipartFile, title: String, bpm: Int): String {
+        return s3UploaderService.uploadSongFile(song, title, bpm)
     }
 
     private fun geSongTitle(file: MultipartFile) {
@@ -45,6 +60,6 @@ class SongService(
     }
 
     private fun convertDto(song: SongEntity): SongResponseDto {
-        return SongResponseDto(song.uuid,song.title, song.artist, song.albumImage, song.downloadUrl,)
+        return SongResponseDto(song.uuid, song.title, song.artist, song.albumImage, song.downloadUrl)
     }
 }
