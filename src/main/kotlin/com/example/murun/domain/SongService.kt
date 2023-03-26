@@ -36,7 +36,8 @@ class SongService(
         val uuid: String = UUID.randomUUID().toString()
         val url = s3UploaderService.uploadBpmFile(multipartFile, title, bpm)
         songJpaRepository.saveBpmSong(bpm.toInt(), uuid, url)
-        return SongResponseDto(uuid, url)
+        return SongResponseDto(uuid,"title","aritst","123", url)
+        //return SongResponseDto(uuid, url)
     }
 
     private fun geSongTitle(file: MultipartFile) {
@@ -44,6 +45,6 @@ class SongService(
     }
 
     private fun convertDto(song: SongEntity): SongResponseDto {
-        return SongResponseDto(song.uuid, song.downloadUrl)
+        return SongResponseDto(song.uuid,song.title, song.artist, song.albumImage, song.downloadUrl,)
     }
 }
