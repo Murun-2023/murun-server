@@ -14,7 +14,7 @@ class MusicController(
 ) {
 
     @ApiOperation(value= "bpm에 맞는 곡 반환", notes = "bpm을 인풋으로 받아서, 해당 bpm과 동일한 곡들을 반환합니다.")
-    @GetMapping
+    @GetMapping("/bpm")
     @ResponseBody
     fun findSong(@RequestParam bpm: Int): List<SongResponseDto> {
         println("bpm :${bpm}")
@@ -37,4 +37,11 @@ class MusicController(
         return songService.addSong(title, artist, bpm, song, albumImage)
     }
 
+    @ApiOperation(value="uuid에 맞는 곡 반환", notes = "uuid를 인풋으로 받아서, 해당 uuidd에 맞는 곡을 반환합니다.")
+    @GetMapping("/uuid")
+    @ResponseBody
+    fun findUUIDSong(@RequestParam uuid: String): SongResponseDto {
+        println("uuid: ${uuid}")
+        return songService.getCorrectUUIDSong(uuid)
+    }
 }
