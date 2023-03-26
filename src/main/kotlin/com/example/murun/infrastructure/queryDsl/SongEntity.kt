@@ -14,4 +14,26 @@ data class SongEntity(
         val uuid: String,
         val bpm: Int,
         val downloadUrl: String
-)
+) {
+    class SongEntityBuilder {
+        var title: String? = null
+        var artist: String? = null
+        var albumImage: String? = null
+        var uuid: String? = null
+        var bpm: Int? = null
+        var url: String? = null
+
+        fun title(title: String) = apply { this.title = title }
+        fun artist(artist: String) = apply { this.artist = artist }
+        fun albumImage(albumImage: String) = apply { this.albumImage = albumImage }
+        fun uuid(uuid: String) = apply { this.uuid = uuid }
+        fun bpm(bpm: Int) = apply { this.bpm = bpm }
+        fun url(url: String) = apply { this.url = url }
+
+        fun build() = SongEntity(null, title!!, artist!!, albumImage!!, uuid!!, bpm!!, url!!)
+    }
+
+    companion object {
+        fun builder() = SongEntityBuilder()
+    }
+}

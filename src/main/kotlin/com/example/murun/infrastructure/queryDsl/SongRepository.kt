@@ -11,15 +11,24 @@ class SongRepository(
         private val jpaQueryFactory: JPAQueryFactory,
         private val songEntityRepository: SongEntityRepository
 ) {
-    fun getCorrectBpmSong(bpm: Int): List<SongEntity>{
+    fun getCorrectBpmSong(bpm: Int): List<SongEntity> {
         return jpaQueryFactory.selectFrom(QSongEntity.songEntity)
                 .where(QSongEntity.songEntity.bpm.eq(bpm))
                 .fetch()
 
     }
+
     //queryDSL insert 라이브러리 문제 때문에 JPA save 사용
-    fun saveBpmSong(bpm: Int,uuid: String,  url: String){
-        songEntityRepository.save(SongEntity(null,uuid, bpm, url))
+    fun saveBpmSong(title: String, artist: String, albumImage: String,bpm: Int, uuid: String, url: String) {
+        val songEntity = SongEntity.builder()
+                .title(title)
+                .artist(artist)
+                .albumImage(albumImage)
+                .uuid(uuid)
+                .bpm(bpm)
+                .url(url)
+                .build()
+        songEntityRepository.save(songEntity)
     }
 }
 
