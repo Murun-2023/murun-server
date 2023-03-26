@@ -7,8 +7,10 @@ import org.jaudiotagger.audio.AudioFileIO
 import org.jaudiotagger.audio.mp3.MP3File
 import org.jaudiotagger.tag.FieldKey
 import org.springframework.stereotype.Service
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
+import java.lang.RuntimeException
 import java.util.*
 
 @Service
@@ -47,16 +49,20 @@ class SongService(
         return SongResponseDto(uuid, title, artist, albumImageUrl, songUrl)
     }
 
+    fun getCorrectUUIDSong(uuid: String): SongResponseDto{
+        val song = songJpaRepository.getCorrectUUIDSong(uuid)
+        song?.let{
+            return convertDto(song)
+        }
+        throw RuntimeException("해당 uuid로 조회가 불가능합니다.")
+    }
+
     private fun uploadAlbumImage(albumImage: MultipartFile, title: String, bpm: Int): String {
         return s3UploaderService.uploadAlbumImage(albumImage, title, bpm)
     }
 
     private fun uploadSong(song: MultipartFile, title: String, bpm: Int): String {
         return s3UploaderService.uploadSongFile(song, title, bpm)
-    }
-
-    private fun geSongTitle(file: MultipartFile) {
-
     }
 
     private fun convertDto(song: SongEntity): SongResponseDto {

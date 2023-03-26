@@ -18,6 +18,12 @@ class SongRepository(
 
     }
 
+    fun getCorrectUUIDSong(uuid: String): SongEntity?{
+        return jpaQueryFactory.selectFrom(QSongEntity.songEntity)
+                .where(QSongEntity.songEntity.uuid.eq(uuid))
+                .fetchOne()
+    }
+
     //queryDSL insert 라이브러리 문제 때문에 JPA save 사용
     fun saveBpmSong(title: String, artist: String, albumImage: String,bpm: Int, uuid: String, url: String) {
         val songEntity = SongEntity.builder()
