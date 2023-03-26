@@ -28,6 +28,10 @@ dependencies {
     kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
     implementation ("org.postgresql:postgresql:42.3.3")
     implementation ("org:jaudiotagger:2.0.3")
+    //swagger
+    implementation("io.springfox:springfox-swagger-ui:3.0.0")
+    implementation("io.springfox:springfox-boot-starter:3.0.0")
+
 
     testImplementation ("org.springframework.boot:spring-boot-starter-test")
 }
