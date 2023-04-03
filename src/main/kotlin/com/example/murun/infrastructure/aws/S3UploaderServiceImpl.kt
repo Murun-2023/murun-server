@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
+import java.io.File
 import java.io.IOException
 
 @Service
@@ -20,13 +21,10 @@ class S3UploaderServiceImpl constructor(private val s3Client: AmazonS3,
 
     }
 
-    override fun uploadAlbumImage(file: MultipartFile, title: String, bpm:Int): String {
-        val metadata = ObjectMetadata()
-        metadata.contentType = file.contentType
-        metadata.contentLength = file.size
+    override fun uploadAlbumImage(file: File, title: String, bpm:Int): String {
         val newFileName: String = bpm.toString() + "bpm/" + albumBase + title
         try{
-            val request = PutObjectRequest(bucket, newFileName, file.inputStream, metadata)
+            val request = PutObjectRequest(bucket, newFileName, file)
             s3Client.putObject(request)
         } catch (e: IOException){
             throw e

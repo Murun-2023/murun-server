@@ -25,16 +25,16 @@ class MusicController(
     @PostMapping
     fun addSong(@ModelAttribute songRequestDto: SongRequestDto): SongResponseDto {
         println("title:${songRequestDto.title}")
-        println("title:${songRequestDto.song}")
+        println("song:${songRequestDto.song}")
         println("bpm:${songRequestDto.bpm}")
-        println("title:${songRequestDto.albumImage}")
-        println("title:${songRequestDto.artist}")
-        val title = songRequestDto.title
-        val song = songRequestDto.song
-        val bpm = songRequestDto.bpm
-        val albumImage = songRequestDto.albumImage
-        val artist = songRequestDto.artist
-        return songService.addSong(title, artist, bpm, song, albumImage)
+        println("albumImage:${songRequestDto.albumImage}")
+        println("artist:${songRequestDto.artist}")
+        var title = songRequestDto.title
+        var song = songRequestDto.song
+        var bpm = songRequestDto.bpm
+        var albumImage = songRequestDto.albumImage
+        var artist = songRequestDto.artist
+        return songService.addSong(title, artist, bpm, albumImage, song)
     }
 
     @ApiOperation(value="uuid에 맞는 곡 반환", notes = "uuid를 인풋으로 받아서, 해당 uuidd에 맞는 곡을 반환합니다.")
