@@ -6,6 +6,7 @@ import com.example.murun.domain.SongService
 import io.swagger.annotations.ApiOperation
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import java.util.*
 
 @RequestMapping("/song")
 @RestController
@@ -13,12 +14,16 @@ class MusicController(
         private val songService: SongService
 ) {
 
-    @ApiOperation(value= "bpm에 맞는 곡 반환", notes = "bpm을 인풋으로 받아서, 해당 bpm과 동일한 곡들을 반환합니다.")
-    @GetMapping("/bpm")
+    @ApiOperation(value = "bpm에 맞는 곡 반환", notes = "bpm을 인풋으로 받아서, 해당 bpm과 동일한 곡들을 반환합니다.")
+    @GetMapping
     @ResponseBody
-    fun findSong(@RequestParam bpm: Int): List<SongResponseDto> {
+    fun findSong(@RequestParam(defaultValue = "0") bpm: Int,
+                 @RequestParam(defaultValue = "") uuid: String): Any {
         println("bpm :${bpm}")
-        return songService.getCorrectBpmSong(bpm)
+        println("uuid :${uuid}")
+        if (bpm != 0) return songService.getCorrectBpmSong(bpm)
+        if (uuid != "") return songService.getCorrectUUIDSong(uuid)
+        return Arrays.asList("none")
     }
 
     @ApiOperation(value = "곡을 추가합니다.", notes = "곡에 필요한 값을 받아 서버와 데이터베이스에 저장하고, 이를 저장한 객체를 반환합니다.")
@@ -37,11 +42,13 @@ class MusicController(
         return songService.addSong(title, artist, bpm, albumImage, song)
     }
 
-    @ApiOperation(value="uuid에 맞는 곡 반환", notes = "uuid를 인풋으로 받아서, 해당 uuidd에 맞는 곡을 반환합니다.")
+    /*
+    @ApiOperation(value = "uuid에 맞는 곡 반환", notes = "uuid를 인풋으로 받아서, 해당 uuidd에 맞는 곡을 반환합니다.")
     @GetMapping("/uuid")
     @ResponseBody
     fun findUUIDSong(@RequestParam uuid: String): SongResponseDto {
         println("uuid: ${uuid}")
         return songService.getCorrectUUIDSong(uuid)
     }
+     */
 }
