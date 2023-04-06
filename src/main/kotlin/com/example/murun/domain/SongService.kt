@@ -1,5 +1,7 @@
 package com.example.murun.domain
 
+import com.example.murun.exception.CustomException
+import com.example.murun.exception.Error
 import com.example.murun.infrastructure.aws.S3UploaderService
 import com.example.murun.infrastructure.queryDsl.SongEntity
 import com.example.murun.infrastructure.queryDsl.SongRepository
@@ -92,11 +94,14 @@ class SongService(
     }
 
     fun getCorrectUUIDSong(uuid: String): SongResponseDto {
+        println("uuid 조회")
         val song = songJpaRepository.getCorrectUUIDSong(uuid)
+        println("song${song}")
         song?.let {
             return convertDto(song)
         }
-        throw RuntimeException("해당 uuid로 조회가 불가능합니다.")
+        println("예외터짐")
+        throw CustomException(Error.NOT_FOUND_SONG)
     }
 
     private fun uploadAlbumImage(albumImage: File, title: String, bpm: Int): String {
