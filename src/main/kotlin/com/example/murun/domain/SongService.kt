@@ -32,14 +32,19 @@ class SongService(
                 }.toList()
     }
 
-    fun addSong(title: String, artist: String, bpm: Int, albumImage: MultipartFile, song: MultipartFile): SongResponseDto {
-        var tmpTitle: String = title
-        var tmpArtist: String = artist
-        var tmpBpm: Int  = bpm
+    fun addSong(songRequestDto: SongRequestDto): SongResponseDto {
+        var tmpTitle: String = songRequestDto.title
+        var tmpArtist: String = songRequestDto.artist
+        var tmpBpm: Int = songRequestDto.bpm
+        var tmpTime: String = songRequestDto.time
+        var song: MultipartFile = songRequestDto.song
+        var albumImage: MultipartFile = songRequestDto.albumImage
         var tmpAlbumImage: File
 
         val file = File(song.originalFilename)
         var imageFile = File(albumImage.originalFilename)
+
+        var time: Long = getTime(tmpTime)
 
         file.writeBytes(song.bytes)
         imageFile.writeBytes(albumImage.bytes)
@@ -49,21 +54,21 @@ class SongService(
         val mp3: MP3File = AudioFileIO.read(file) as MP3File
         file.delete()
 
-        try{
+        try {
             println("mp3 artist: ${mp3.tag.getFirst(FieldKey.ARTIST)}")
-            tmpArtist = if(mp3.tag.getFirst(FieldKey.ARTIST) == "") artist else mp3.tag.getFirst(FieldKey.ARTIST)
-        } catch (e: Exception){
+            tmpArtist = if (mp3.tag.getFirst(FieldKey.ARTIST) == "") songRequestDto.artist else mp3.tag.getFirst(FieldKey.ARTIST)
+        } catch (e: Exception) {
             e.stackTrace
         }
 
-        try{
-            tmpTitle= if(mp3.tag.getFirst(FieldKey.TITLE) == "") title else mp3.tag.getFirst(FieldKey.TITLE)
-        }catch (e: Exception){
+        try {
+            tmpTitle = if (mp3.tag.getFirst(FieldKey.TITLE) == "") songRequestDto.title else mp3.tag.getFirst(FieldKey.TITLE)
+        } catch (e: Exception) {
             e.stackTrace
         }
-        try{
+        try {
             tmpBpm = mp3.tag.getFirst(FieldKey.BPM).toInt()
-        } catch (e: Exception){
+        } catch (e: Exception) {
             e.stackTrace
         }
         try {
@@ -72,7 +77,7 @@ class SongService(
             imageFile = File("${tmpTitle}.png")
             ImageIO.write(image, "png", imageFile)
             tmpAlbumImage = imageFile
-        } catch (e: Exception){
+        } catch (e: Exception) {
             e.stackTrace
         }
         val uuid: String = UUID.randomUUID().toString()
@@ -82,18 +87,18 @@ class SongService(
 
         //albumImage 저장
         val albumImageUrl = uploadAlbumImage(tmpAlbumImage, tmpTitle, tmpBpm)
-        if(tmpBpm in 60..90){
+        if (tmpBpm in 60..90) {
             uploadAlbumImage(tmpAlbumImage, tmpTitle, tmpBpm * 2)
         }
-        if(tmpBpm in 120..180){
+        if (tmpBpm in 120..180) {
             uploadAlbumImage(tmpAlbumImage, tmpTitle, tmpBpm / 2)
         }
         //song 파일 저장
         val songUrl = uploadSong(song, tmpTitle, tmpBpm)
         tmpAlbumImage.delete()
 
-        songJpaRepository.saveBpmSong(tmpTitle, tmpArtist, albumImageUrl, tmpBpm, uuid, songUrl)
-        return SongResponseDto(uuid, tmpTitle, tmpArtist, albumImageUrl, songUrl)
+        songJpaRepository.saveBpmSong(tmpTitle, tmpArtist, time, albumImageUrl, tmpBpm, uuid, songUrl)
+        return SongResponseDto(uuid, tmpTitle, tmpArtist, time, albumImageUrl, songUrl)
     }
 
     fun getCorrectUUIDSong(uuid: String): SongResponseDto {
@@ -107,6 +112,13 @@ class SongService(
         throw CustomException(Error.NOT_FOUND_SONG)
     }
 
+    private fun getTime(time: String): Long {
+        var timeSplit = time.split(":")
+        println("first:${timeSplit[0].toLong() * 60}")
+        println("second:${timeSplit[1].toLong() }")
+        return (timeSplit[0].toLong() * 60 + (timeSplit[1].toLong())) * 1000L
+    }
+
     private fun uploadAlbumImage(albumImage: File, title: String, bpm: Int): String {
         return s3UploaderService.uploadAlbumImage(albumImage, title, bpm)
     }
@@ -117,6 +129,6 @@ class SongService(
 
 
     private fun convertDto(song: SongEntity): SongResponseDto {
-        return SongResponseDto(song.uuid, song.title, song.artist, song.albumImage, song.downloadUrl)
+        return SongResponseDto(song.uuid, song.title, song.artist, song.time, song.albumImage, song.downloadUrl)
     }
 }

@@ -26,10 +26,11 @@ class SongRepository(
     }
 
     //queryDSL insert 라이브러리 문제 때문에 JPA save 사용
-    fun saveBpmSong(title: String, artist: String, albumImage: String,bpm: Int, uuid: String, url: String) {
+    fun saveBpmSong(title: String, artist: String, time: Long, albumImage: String,bpm: Int, uuid: String, url: String) {
         val songEntity = SongEntity.builder()
                 .title(title)
                 .artist(artist)
+                .time(time)
                 .albumImage(albumImage)
                 .uuid(uuid)
                 .bpm(bpm)
