@@ -32,14 +32,10 @@ class MusicController(
         println("title:${songRequestDto.title}")
         println("song:${songRequestDto.song}")
         println("bpm:${songRequestDto.bpm}")
+        println("time:${songRequestDto.time}")
         println("albumImage:${songRequestDto.albumImage}")
         println("artist:${songRequestDto.artist}")
-        var title = songRequestDto.title
-        var song = songRequestDto.song
-        var bpm = songRequestDto.bpm
-        var albumImage = songRequestDto.albumImage
-        var artist = songRequestDto.artist
-        return songService.addSong(title, artist, bpm, albumImage, song)
+        return songService.addSong(songRequestDto)
     }
 
     /*

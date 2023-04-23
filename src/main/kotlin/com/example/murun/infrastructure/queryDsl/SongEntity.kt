@@ -10,6 +10,7 @@ data class SongEntity(
         val id: Int? = null,
         val title: String,
         val artist: String,
+        val time: Long,
         val albumImage: String,
         val uuid: String,
         val bpm: Int,
@@ -18,6 +19,7 @@ data class SongEntity(
     class SongEntityBuilder {
         var title: String? = null
         var artist: String? = null
+        var time: Long? = null
         var albumImage: String? = null
         var uuid: String? = null
         var bpm: Int? = null
@@ -29,8 +31,9 @@ data class SongEntity(
         fun uuid(uuid: String) = apply { this.uuid = uuid }
         fun bpm(bpm: Int) = apply { this.bpm = bpm }
         fun url(url: String) = apply { this.url = url }
+        fun time(time: Long) = apply { this.time = time }
 
-        fun build() = SongEntity(null, title!!, artist!!, albumImage!!, uuid!!, bpm!!, url!!)
+        fun build() = SongEntity(null, title!!, artist!!, time!!, albumImage!!, uuid!!, bpm!!, url!!)
     }
 
     companion object {
