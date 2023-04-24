@@ -21,7 +21,7 @@ class MusicController(
                  @RequestParam(defaultValue = "") uuid: String): Any {
         println("bpm :${bpm}")
         println("uuid :${uuid}")
-        if (bpm != 0) return songService.getCorrectBpmSong(bpm)
+        if (bpm >= 0) return songService.getCorrectBpmSong(bpm)
         if (uuid != "") return songService.getCorrectUUIDSong(uuid)
         return Arrays.asList("none")
     }

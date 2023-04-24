@@ -8,7 +8,7 @@ class MuRunApplicationTests {
 
     @Test
     fun test(){
-        val test = "3:42".split(":")
+        val test = "3:04".split(":")
         println("first:${test[0].toLong() * 60}")
         println("second:${test[1].toLong() }")
         println((test[0].toLong() * 60 + (test[1].toLong())) * 1000L)
