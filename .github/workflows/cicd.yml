@@ -47,11 +47,6 @@ jobs:
       - name: Copy deploy.sh
         run: cp deploy.sh ./deploy
         
-      # 파일 넘기기
-      - name: Copy doc
-        run: cp -r doc/ ./deploy
-        working-directory: ${{env.working-directory}}
-        
       # 압축파일 형태로 전달
       - name: Make zip file
         run: zip -r -qq -j ./murun.zip ./deploy
