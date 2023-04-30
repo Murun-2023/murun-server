@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  real-world:
+  murun-cicd:
     runs-on: ubuntu-latest
     env:
       working-directory: .
