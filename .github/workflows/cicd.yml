@@ -58,7 +58,7 @@ jobs:
           AWS_S3_BUCKET: ${{secrets.AWS_PRODUCTION_BUCKET_NAME}}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_IAM_MANAGER_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_IAM_MANAGER_SECRET_ACCESS_KEY }}
-          AWS_REGION: ap-northeast-2
+          AWS_REGION: us-east-1
         run: |
           aws s3 cp --region ap-northeast-2 --acl private ./murun.zip s3://$AWS_S3_BUCKET
           
@@ -70,7 +70,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_IAM_MANAGER_SECRET_ACCESS_KEY }}
         run: |
           aws deploy create-deployment \
-            --application-name real-world \
-            --deployment-group-name real-world-group \
+            --application-name murun \
+            --deployment-group-name murun-deploy \
             --s3-location bucket=$AWS_S3_BUCKET,key=murun.zip,bundleType=zip \
-            --region ap-northeast-2
+            --region us-east-1
