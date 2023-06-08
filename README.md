@@ -1,4 +1,4 @@
-# 🏃‍♀️ Murun-android 🏃‍♂️
+# 🏃‍♀️ Murun-android-server 🏃‍♂️
 
 ![Group 1 (2)](https://github.com/jangjh123/murun-android/assets/82919343/b1312ce8-9a62-43b7-814f-3eaba0fbbac3)
 
