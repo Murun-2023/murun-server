@@ -93,12 +93,14 @@ class SongService(
 
         //albumImage 저장
         val albumImageUrl = uploadAlbumImage(tmpAlbumImage, tmpTitle, tmpBpm)
+        /*
         if (tmpBpm in 60..90) {
             uploadAlbumImage(tmpAlbumImage, tmpTitle, tmpBpm * 2)
         }
         if (tmpBpm in 120..180) {
             uploadAlbumImage(tmpAlbumImage, tmpTitle, tmpBpm / 2)
         }
+         */
         //song 파일 저장
         val songUrl = uploadSong(song, tmpTitle, tmpBpm)
         tmpAlbumImage.delete()

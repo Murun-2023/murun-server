@@ -12,9 +12,11 @@ class SongRepository(
         private val songEntityRepository: SongEntityRepository
 ) {
     fun getCorrectBpmSong(bpm: Int): List<SongEntity> {
-        val range = 3
+        val range = 2
         return jpaQueryFactory.selectFrom(QSongEntity.songEntity)
-                .where(QSongEntity.songEntity.bpm.between(bpm - range, bpm + range))
+                .where(QSongEntity.songEntity.bpm.between(bpm - range, bpm + range)
+                        .or(QSongEntity.songEntity.bpm.between(bpm*2 - range, bpm + range)
+                                .or(QSongEntity.songEntity.bpm.between(bpm/2 - range, bpm/2 + range))))
                 .fetch()
 
     }
