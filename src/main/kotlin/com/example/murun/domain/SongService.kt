@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.multipart.commons.CommonsMultipartFile
 import java.io.ByteArrayInputStream
 import java.io.File
+import java.io.FileOutputStream
 import java.lang.Exception
 import java.lang.RuntimeException
 import java.util.*
@@ -67,15 +68,20 @@ class SongService(
             e.stackTrace
         }
         try {
-            tmpBpm = mp3.tag.getFirst(FieldKey.BPM).toInt()
+            tmpBpm = songRequestDto.bpm
+            //tmpBpm = mp3.tag.getFirst(FieldKey.BPM).toInt()
         } catch (e: Exception) {
             e.stackTrace
         }
         try {
-            val imageData = mp3.tag.firstArtwork.binaryData
-            val image = ImageIO.read(ByteArrayInputStream(imageData))
+            //val imageData = mp3.tag.firstArtwork.binaryData
+            val imageData = songRequestDto.albumImage
+            //val image = ImageIO.read(ByteArrayInputStream(imageData))
             imageFile = File("${tmpTitle}.png")
-            ImageIO.write(image, "png", imageFile)
+            val fileOutputStream = FileOutputStream(imageFile)
+            fileOutputStream.write(imageData.bytes)
+            fileOutputStream.close()
+            //ImageIO.write(image, "png", imageFile)
             tmpAlbumImage = imageFile
         } catch (e: Exception) {
             e.stackTrace
