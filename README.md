@@ -31,9 +31,12 @@ https://github.com/kkminseok
 - 파일의 저장 및 불러오기에 대해 더욱 자세히 알게 되었고, 활용 방식을 익힐 수 있었습니다.
 - 안드로이드와 어떠한 방식으로 협업해야 잘 될지에 대한 고민은 있습니다.
 
+## ..
 
-## why?
-
-- QueryDsl `insert`문제
-- Rds 가끔씩 연결 안되는 문제
-- kotlin compiler 문제
+- AWS Lambda
+- AWS CloudWatch
+- AWS Elastic TransCoder
+- RDS
+- EC2
+- IAM
+- ...
