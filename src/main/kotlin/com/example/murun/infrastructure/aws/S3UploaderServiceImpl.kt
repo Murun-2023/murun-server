@@ -46,6 +46,7 @@ class S3UploaderServiceImpl constructor(private val s3Client: AmazonS3,
             throw e
         }
         return basePath + (output + bpm.toString() + "bpm/" + title).replace(" ","+") + "/Hls.m3u8";
+
     }
 
 }
