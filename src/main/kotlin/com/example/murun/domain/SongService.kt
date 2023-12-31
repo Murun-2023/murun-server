@@ -33,6 +33,16 @@ class SongService(
                 }.toList()
     }
 
+    fun getRandomBpmSong(bpm: Int): SongResponseDto{
+        val songList = songJpaRepository.getCorrectBpmSong(bpm)
+                .map {
+                    convertDto(it)
+                }.toList()
+        val random = Random()
+        println("size: ${songList.size}")
+        return songList.get(random.nextInt(songList.size))
+    }
+
     fun addSong(songRequestDto: SongRequestDto): SongResponseDto {
         var tmpTitle: String = songRequestDto.title
         var tmpArtist: String = songRequestDto.artist
